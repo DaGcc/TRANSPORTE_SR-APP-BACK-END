@@ -26,42 +26,40 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity
-@Table( name = "solicitud" )
-public class Solicitud  implements Serializable{
-    
+@Table(name = "solicitud")
+public class Solicitud implements Serializable {
+
     @Id
-    @GeneratedValue( strategy = GenerationType.IDENTITY )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idSolicitud;
-    
-    @NotNull
+
+    @NotNull(message = "El campo: servicio, no debe ser nulo.")
     @ManyToOne
-    @JoinColumn(name = "id_servicio",nullable = false, foreignKey = @ForeignKey( name = "fk_solicitud_servicio"))
+    @JoinColumn(name = "id_servicio", nullable = false, foreignKey = @ForeignKey(name = "fk_solicitud_servicio"))
     private Servicio servicio;
-    
-    
-    @NotNull
+
+    @NotNull(message = "El campo: cliente, no debe de ser nulo.")
     @ManyToOne
-    @JoinColumn(name = "id_cliente",nullable = false, foreignKey = @ForeignKey( name = "fk_solicitud_cliente"))
+    @JoinColumn(name = "id_cliente", nullable = false, foreignKey = @ForeignKey(name = "fk_solicitud_cliente"))
     private Cliente cliente;
-    
-    @NotNull
-    @NotEmpty
-    @Size( min = 40 ,max = 150, message ="Como minimo brinda una descripción de 40 caracteres y como maximo 150")
+
+    @NotNull(message = "El campo: descripcion, no debe de ser nulo.")
+    @NotEmpty(message = "El campo: descripcion, no debe ser vacio.")
+    @Size(min = 15, max = 150, message = "Como minimo brinda una descripción de 15 caracteres y como maximo 150")
     @Column(name = "descripcion", length = 150, nullable = false)
     private String descripcion;
-   
-    @JsonSerialize( using = ToStringSerializer.class)
-    private LocalDateTime fechaSolicitada; 
-   
-    @NotNull
-    @Column(name ="estado", nullable = false)
-    private boolean estado;
-    
-    @JsonIgnoreProperties( value = {"solicitud"}, allowSetters = true)
-    @OneToMany( mappedBy = "solicitud", cascade = CascadeType.ALL, orphanRemoval = true )
+
+    @JsonSerialize(using = ToStringSerializer.class)
+    private LocalDateTime fechaSolicitada;
+
+    @NotNull(message = "El campo: estado, no debe de ser nulo.")
+    @Column(name = "estado", nullable = false)
+    private boolean estado; //aqui si por "true" o "false"
+
+    @JsonIgnoreProperties(value = {"solicitud"}, allowSetters = true)
+    @OneToMany(mappedBy = "solicitud", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DetalleSolicitud> listaDetalleSolicitud;
-    
-    
+
     public Solicitud() {
     }
 
@@ -121,9 +119,4 @@ public class Solicitud  implements Serializable{
         this.listaDetalleSolicitud = listaDetalleSolicitud;
     }
 
-    
-    
-   
-    
-    
 }

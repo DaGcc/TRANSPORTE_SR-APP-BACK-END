@@ -3,11 +3,16 @@ package com.org.tr.util;
 
 /**
  *
- * @author gutie
+ * Representa a los estados dela solicitudes
  */
 public class Estado {
         
     public static enum types{
-        EVALUACION,PENDIENTE,RECHAZADO,REALIZADO;
+        RECIBIDO,
+        EVALUACION,
+        PENDIENTE,
+        RECHAZADO,
+        TRABAJANDO,
+        REALIZADO
     }
 }

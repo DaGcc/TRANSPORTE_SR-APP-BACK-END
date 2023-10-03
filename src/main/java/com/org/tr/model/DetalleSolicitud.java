@@ -18,34 +18,32 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity
-@Table( name = "DetalleSolicitud" )
-public class DetalleSolicitud implements Serializable{
-    
-        
+@Table(name = "detalle_solicitud")
+public class DetalleSolicitud implements Serializable {
+
     @Id
-    @GeneratedValue( strategy = GenerationType.IDENTITY )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idDetalleSolicitud;
-    
-    
-    @NotNull
-    @JsonIgnoreProperties( value = {"listaDetalleSolicitud"})
+
+    @NotNull(message = "El campo: solicitud, no debe de ser nulo.")
+    @JsonIgnoreProperties(value = {"listaDetalleSolicitud"})
     @ManyToOne
-    @JoinColumn(name ="id_solicitud", nullable = false,  foreignKey = @ForeignKey(name ="fk_detalle_solicitud_solicitud"))
+    @JoinColumn(name = "id_solicitud", nullable = false, foreignKey = @ForeignKey(name = "fk_detalle_solicitud_solicitud"))
     private Solicitud solicitud;
-    
-    
-    @JsonSerialize( using = ToStringSerializer.class)
+
+    @JsonSerialize(using = ToStringSerializer.class)
     private LocalDateTime fecha;
-    
-    @NotNull
-    @Column(name ="estado", nullable = false)
+
+    @NotNull(message = "El campo: estado, no debe de ser nulo.")
+    @NotEmpty(message = "El campo: estado, no debe ser vacio.")
+    @Size(max = 40, message = "Como maximo 40 caracteres")
+    @Column(name = "estado", nullable = false, length = 40)
     private String estado;
-    
-    
-    
 
     public Integer getIdDetalleSolicitud() {
         return idDetalleSolicitud;
@@ -78,8 +76,5 @@ public class DetalleSolicitud implements Serializable{
     public void setEstado(String estado) {
         this.estado = estado;
     }
-    
-    
-    
-    
+
 }

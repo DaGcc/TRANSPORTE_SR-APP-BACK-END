@@ -35,28 +35,31 @@ public class Cliente implements Serializable {
     @Column( name = "ruc", nullable = true, length = 11, unique = true )
     private String ruc; 
     
-    @NotNull
-    @NotEmpty
+    @NotNull( message = "El campo: nombres, no debe de ser nulo.")
+    @NotEmpty( message = "El campo: nombres, no debe ser vacio." )
     @Size( min = 3, max = 35, message = "El nombre debe de tener como minimo 3 caracteres y como maximo 35." )
     @Column( name = "nombres", nullable = false, length = 35 )
     private String nombres;
     
-    @NotNull
-    @NotEmpty
+    
+    @NotEmpty( message = "El campo: telefono, no debe ser vacio." )
     @Size( min = 9, max = 9, message = "El número de telefono debe de tener 9 digitos." )
     @Column( name = "telefono", nullable = true, length = 9, unique = true )
     private String telefono;
     
-    @NotNull
-    @Email
+    @NotNull( message ="El campo: email, no debe ser nulo." )
+    @Email( message = "Ingrese de manera correcta la direccion email.")
     @Column( name = "email", nullable = false, unique = true )
     private String email;
     
-    @NotNull
-    @Column( name = "estado", nullable = false )
-    private boolean estado; 
+    
+    @NotNull(message = "El campo: estado, no debe de ser nulo.")
+    @NotEmpty(message = "El campo: estado, no debe ser vacio.")
+    @Size(max = 40, message = "Como maximo 40 caracteres")
+    @Column( name = "estado", nullable = false, length = 40 )
+    private String estado; 
 
-    @NotNull
+    @NotNull( message ="El campo: tipoCliente, no debe ser nulo." )
     @ManyToOne
     @JoinColumn( name="id_tipo_cliente",nullable = false, foreignKey = @ForeignKey( name = "fk_cliente_tipo_cliente" )  )
     private TipoCliente tipoCliente;
@@ -109,11 +112,19 @@ public class Cliente implements Serializable {
         this.email = email;
     }
 
-    public boolean isEstado() {
+    public String getNombres() {
+        return nombres;
+    }
+
+    public void setNombres(String nombres) {
+        this.nombres = nombres;
+    }
+
+    public String getEstado() {
         return estado;
     }
 
-    public void setEstado(boolean estado) {
+    public void setEstado(String estado) {
         this.estado = estado;
     }
 

@@ -29,42 +29,42 @@ public class Conductor implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idConductor;
 
-    @NotNull
-    @NotEmpty
+    @NotNull(message = "El campo: nombres, no debe de ser nulo.")
+    @NotEmpty(message = "El campo: nombres, no debe ser vacio.")
     @Size(min = 3, max = 35, message = "El nombre debe de tener como minimo 3 caracteres y como maximo 35.")
     @Column(name = "nombres", nullable = false, length = 35)
     private String nombres;
-   
-    @NotNull
+
+    @NotNull(message = "El campo: genero, no debe de ser nulo.")
     @ManyToOne
     @JoinColumn(name = "id_genero", nullable = false,
             foreignKey = @ForeignKey(name = "fk_conductor_genero"))
     private Genero genero;
 
-    @NotNull
-    @NotEmpty
+    @NotNull(message = "El campo: apellidoPaterno, no debe de ser nulo.")
+    @NotEmpty(message = "El campo: apellidoPaterno, no debe ser vacio.")
     @Size(min = 3, max = 35, message = "El apellido paterno debe de tener como minimo 3 caracteres y como maximo 35.")
     @Column(name = "apellido_paterno", nullable = false, length = 35)
     private String apellidoPaterno;
 
-    @NotNull
-    @NotEmpty
+    @NotNull(message = "El campo: apellidoMaterno, no debe de ser nulo.")
+    @NotEmpty(message = "El campo: apellidoMaterno, no debe ser vacio.")
     @Size(min = 3, max = 35, message = "El apellido materno debe de tener como minimo 3 caracteres y como maximo 35.")
     @Column(name = "apellido_materno", nullable = false, length = 35)
     private String apellidoMaterno;
 
-    @NotNull
-    @NotEmpty
+    @NotNull(message = "El campo: dni, no debe de ser nulo.")
+    @NotEmpty(message = "El campo: dni, no debe ser vacio.")
     @Size(min = 8, max = 8, message = "El dni debe de tener 8 digitos")
     @Column(name = "dni", nullable = false, length = 8, unique = true)
     private String dni;
 
-    @NotNull
-    @NotEmpty
+    @NotNull(message = "El campo: edad, no debe de ser nulo.")
+    @NotEmpty(message = "El campo: edad, no debe ser vacio.")
     @Column(name = "edad", nullable = false)
     private String edad;
-    
-    @NotEmpty
+
+    @NotEmpty(message = "El campo: telefono, no debe ser vacio.")
     @Size(min = 9, max = 9, message = "El número de telefono debe de tener 9 digitos.")
     @Column(name = "telefono", nullable = true, length = 9, unique = true)
     private String telefono;
@@ -79,15 +79,16 @@ public class Conductor implements Serializable {
     private byte[] foto;
 
     
-    @NotNull
-    @Column(name = "estado", nullable = false)
-    private boolean estado;
+    @NotNull(message = "El campo: estado, no debe de ser nulo.")
+    @NotEmpty(message = "El campo: estado, no debe ser vacio.")
+    @Size(max = 40, message = "Como maximo 40 caracteres")
+    @Column( name = "estado", nullable = false, length = 40 )
+    private String estado; 
 
-    
     public Conductor() {
     }
 
-    public Conductor(Integer idConductor, String nombres, Genero genero, String apellidoPaterno, String apellidoMaterno, String dni, String edad, String telefono, String email, byte[] foto, boolean estado) {
+    public Conductor(Integer idConductor, String nombres, Genero genero, String apellidoPaterno, String apellidoMaterno, String dni, String edad, String telefono, String email, byte[] foto, String estado) {
         this.idConductor = idConductor;
         this.nombres = nombres;
         this.genero = genero;
@@ -101,11 +102,7 @@ public class Conductor implements Serializable {
         this.estado = estado;
     }
 
-    
-    
-    
     //TODO: metodos 
-    
     public Integer getIdConductor() {
         return idConductor;
     }
@@ -186,14 +183,11 @@ public class Conductor implements Serializable {
         this.foto = foto;
     }
 
-    public boolean isEstado() {
+    public String getEstado() {
         return estado;
     }
 
-    public void setEstado(boolean estado) {
+    public void setEstado(String estado) {
         this.estado = estado;
     }
-    
-    
-    
 }

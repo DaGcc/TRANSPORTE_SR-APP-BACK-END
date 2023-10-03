@@ -30,40 +30,41 @@ public class DetalleCliente implements Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idDetalleCliente;
 
-    @NotNull
+    @NotNull( message ="El campo: cliente, no debe ser nulo." )
     @JsonIgnoreProperties(value = {"detalleCliente"})
     @OneToOne //@OneToOne(targetEntity = Cliente.class)
-    @JoinColumn(name = "id_cliente", nullable= false, unique = true, 
+    @JoinColumn(name = "id_cliente", nullable = false, unique = true, 
             foreignKey = @ForeignKey(name = "fk_detalle_cliente_cliente"))
     private Cliente cliente;
    
-    @NotNull
+    @NotNull( message ="El campo: genero, no debe ser nulo." )
     @ManyToOne
-    @JoinColumn(name = "id_genero", nullable= false, 
+    @JoinColumn(name = "id_genero", nullable = false, 
             foreignKey = @ForeignKey(name = "fk_detalle_cliente_genero"))
     private Genero genero;
 
-    @NotNull
-    @NotEmpty
+    @NotNull( message ="El campo: apellidoPaterno, no debe ser nulo." )
+    @NotEmpty( message ="El campo: apellidoPaterno, no debe ser vacio." )
     @Size(min = 3, max = 35, message = "El apellido paterno debe de tener como minimo 3 caracteres y como maximo 35.")
     @Column(name = "apellido_paterno", nullable = false, length = 35)
     private String apellidoPaterno;
 
-    @NotNull
-    @NotEmpty
+    @NotNull( message ="El campo: apellidoMaterno, no debe ser nulo." )
+    @NotEmpty( message ="El campo: apellidoMaterno, no debe ser vacio." )
     @Size(min = 3, max = 35, message = "El apellido materno debe de tener como minimo 3 caracteres y como maximo 35.")
     @Column(name = "apellido_materno", nullable = false, length = 35)
     private String apellidoMaterno;
     
-    @NotNull
-    @NotEmpty
+    @NotNull( message ="El campo: dni, no debe ser nulo." )
+    @NotEmpty( message ="El campo: dni, no debe ser vacio." )
     @Size(min = 8, max = 8, message = "El dni debe de tener 8 digitos")
     @Column(name = "dni", nullable = false, length = 8, unique = true)
     private String dni;
     
-    @NotNull
-    @NotEmpty
-    @Column( name = "edad", nullable = false )
+    @NotNull( message ="El campo: edad, no debe ser nulo." )
+    @NotEmpty( message ="El campo: edad, no debe ser vacio." )
+    @Size( min = 2, max = 3, message = "La edad solo se aceptan mayores de 18, y con un maxiom de 3 caracteres.")
+    @Column( name = "edad", nullable = false, length = 3 )
     private String edad;
     
     @Lob
