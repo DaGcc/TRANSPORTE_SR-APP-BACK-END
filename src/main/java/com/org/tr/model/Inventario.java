@@ -23,13 +23,29 @@ public class Inventario {
     private Integer idInventario;
     
     
-    
-    @NotNull
-    @NotEmpty
+    @NotNull( message ="El campo: nombre, no debe ser nulo.")
+    @NotEmpty( message ="El campo: nombre, no debe de estar vacio.")
     @Size( min = 2, max = 35, message = "El nombre debe de tener como minimo 2 caracteres y como maximo 35." )
     @Column( name = "nombre", nullable = false, length = 35 )
     private String nombre;
-    
 
+    public Integer getIdInventario() {
+        return idInventario;
+    }
+
+    public void setIdInventario(Integer idInventario) {
+        this.idInventario = idInventario;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+    
+    
+        
     
 }

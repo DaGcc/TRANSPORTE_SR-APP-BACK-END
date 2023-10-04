@@ -15,7 +15,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotNull;
 
 
 @Entity
@@ -27,15 +31,19 @@ public class AbastecimientoCombustible {
     @GeneratedValue( strategy = GenerationType.IDENTITY )
     private Integer idAbastecimientoCombustible;
     
+    @NotNull( message ="El campo: vehiculo, no debe ser nulo.")
+    @ManyToOne
     @JoinColumn( name = "id_vehiculo", nullable = false, 
             foreignKey = @ForeignKey(name="fk_abastecimiento_combustible_vehiculo"))
     private Vehiculo vehiculo;
     
-    
-    @Column(name="costo", nullable = false)
+    @DecimalMin(value = "0.00", message ="El costo no puede ser negativo.")
+    @DecimalMax(value = "1999.99", message ="El costo maximo es de S/.1999.99 soles.")
+    @Column(name="costo", nullable = false, scale = 2)
     private BigDecimal costo; //FALTA ESPECIFICAR COSTOS maximos
     
-    @Column(name ="cantidad", nullable = false)
+    @DecimalMin(value = "0.00", message ="La cantidad de combustible no puede ser negativo.")
+    @Column(name ="cantidad", nullable = false, scale = 2)
     private BigDecimal cantidad;
     
     @JsonSerialize( using = ToStringSerializer.class)
