@@ -79,16 +79,14 @@ public class Conductor implements Serializable {
     private byte[] foto;
 
     
-    @NotNull(message = "El campo: estado, no debe de ser nulo.")
-    @NotEmpty(message = "El campo: estado, no debe ser vacio.")
-    @Size(max = 40, message = "Como maximo 40 caracteres")
-    @Column( name = "estado", nullable = false, length = 40 )
-    private String estado; 
+    @NotNull(message = "El campo: estado, no debe ser nulo")
+    @Column(name = "estado", nullable = false)
+    private boolean estado;
 
     public Conductor() {
     }
 
-    public Conductor(Integer idConductor, String nombres, Genero genero, String apellidoPaterno, String apellidoMaterno, String dni, String edad, String telefono, String email, byte[] foto, String estado) {
+    public Conductor(Integer idConductor, String nombres, Genero genero, String apellidoPaterno, String apellidoMaterno, String dni, String edad, String telefono, String email, byte[] foto, boolean estado) {
         this.idConductor = idConductor;
         this.nombres = nombres;
         this.genero = genero;
@@ -183,11 +181,12 @@ public class Conductor implements Serializable {
         this.foto = foto;
     }
 
-    public String getEstado() {
+    public boolean isEstado() {
         return estado;
     }
 
-    public void setEstado(String estado) {
+    public void setEstado(boolean estado) {
         this.estado = estado;
     }
+    
 }

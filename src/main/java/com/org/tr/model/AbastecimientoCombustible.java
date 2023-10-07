@@ -50,6 +50,10 @@ public class AbastecimientoCombustible {
     private LocalDateTime fecha;
 
     
+    @NotNull(message = "El campo: estado, no debe de ser nulo.")
+    @Column(name = "estado", nullable = false)
+    private boolean estado;
+    
     //TODO: metodos
     
     public AbastecimientoCombustible() {
@@ -102,6 +106,14 @@ public class AbastecimientoCombustible {
 
     public void setFecha(LocalDateTime fecha) {
         this.fecha = fecha;
+    }
+
+    public boolean isEstado() {
+        return estado;
+    }
+
+    public void setEstado(boolean estado) {
+        this.estado = estado;
     }
     
     

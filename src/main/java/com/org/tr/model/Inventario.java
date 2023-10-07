@@ -17,17 +17,20 @@ import javax.validation.constraints.Size;
 @Entity
 @Table(name = "inventario")
 public class Inventario {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idInventario;
-    
-    
-    @NotNull( message ="El campo: nombre, no debe ser nulo.")
-    @NotEmpty( message ="El campo: nombre, no debe de estar vacio.")
-    @Size( min = 2, max = 35, message = "El nombre debe de tener como minimo 2 caracteres y como maximo 35." )
-    @Column( name = "nombre", nullable = false, length = 35 )
+
+    @NotNull(message = "El campo: nombre, no debe ser nulo.")
+    @NotEmpty(message = "El campo: nombre, no debe de estar vacio.")
+    @Size(min = 2, max = 35, message = "El nombre debe de tener como minimo 2 caracteres y como maximo 35.")
+    @Column(name = "nombre", nullable = false, length = 35)
     private String nombre;
+
+    @NotNull(message = "El campo: estado, no debe de ser nulo.")
+    @Column(name = "estado", nullable = false)
+    private boolean estado;
 
     public Integer getIdInventario() {
         return idInventario;
@@ -44,8 +47,14 @@ public class Inventario {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-    
-    
-        
+
+    public boolean isEstado() {
+        return estado;
+    }
+
+    public void setEstado(boolean estado) {
+        this.estado = estado;
+    }
+
     
 }

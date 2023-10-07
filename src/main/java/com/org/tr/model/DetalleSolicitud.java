@@ -39,11 +39,15 @@ public class DetalleSolicitud implements Serializable {
     @JsonSerialize(using = ToStringSerializer.class)
     private LocalDateTime fecha;
 
+    @NotNull(message = "El campo: estadoAccion, no debe de ser nulo.")
+    @NotEmpty(message = "El campo: estadoAccion, no debe ser vacio.")
+    @Size(max = 40, message = "El campo estadoAccion debe de tener como maximo 40 caracteres.")
+    @Column(name = "estado_accion", nullable = false, length = 40)
+    private String estadoAccion;
+
     @NotNull(message = "El campo: estado, no debe de ser nulo.")
-    @NotEmpty(message = "El campo: estado, no debe ser vacio.")
-    @Size(max = 40, message = "Como maximo 40 caracteres")
-    @Column(name = "estado", nullable = false, length = 40)
-    private String estado;
+    @Column(name = "estado", nullable = false)
+    private boolean estado;
 
     public Integer getIdDetalleSolicitud() {
         return idDetalleSolicitud;
@@ -69,12 +73,22 @@ public class DetalleSolicitud implements Serializable {
         this.fecha = fecha;
     }
 
-    public String getEstado() {
+    public String getEstadoAccion() {
+        return estadoAccion;
+    }
+
+    public void setEstadoAccion(String estadoAccion) {
+        this.estadoAccion = estadoAccion;
+    }
+
+    public boolean isEstado() {
         return estado;
     }
 
-    public void setEstado(String estado) {
+    public void setEstado(boolean estado) {
         this.estado = estado;
     }
+
+    
 
 }

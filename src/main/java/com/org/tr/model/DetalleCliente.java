@@ -6,6 +6,7 @@ package com.org.tr.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
+import java.util.Objects;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -30,12 +31,11 @@ public class DetalleCliente implements Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idDetalleCliente;
 
-    @NotNull( message ="El campo: cliente, no debe ser nulo." )
     @JsonIgnoreProperties(value = {"detalleCliente"})
     @OneToOne //@OneToOne(targetEntity = Cliente.class)
-    @JoinColumn(name = "id_cliente", nullable = false, unique = true, 
+    @JoinColumn(name = "id_cliente", unique = true, 
             foreignKey = @ForeignKey(name = "fk_detalle_cliente_cliente"))
-    private Cliente cliente;
+    private Cliente cliente; 
    
     @NotNull( message ="El campo: genero, no debe ser nulo." )
     @ManyToOne
@@ -136,6 +136,31 @@ public class DetalleCliente implements Serializable{
 
     public void setGenero(Genero genero) {
         this.genero = genero;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 97 * hash + Objects.hashCode(this.idDetalleCliente);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final DetalleCliente other = (DetalleCliente) obj;
+        if (!Objects.equals(this.idDetalleCliente, other.idDetalleCliente)) {
+            return false;
+        }
+        return true;
     }
     
     

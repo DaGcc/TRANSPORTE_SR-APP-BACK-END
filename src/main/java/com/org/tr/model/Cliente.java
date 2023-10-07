@@ -6,6 +6,7 @@ package com.org.tr.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
+import java.util.Objects;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -53,11 +54,9 @@ public class Cliente implements Serializable {
     private String email;
     
     
-    @NotNull(message = "El campo: estado, no debe de ser nulo.")
-    @NotEmpty(message = "El campo: estado, no debe ser vacio.")
-    @Size(max = 40, message = "Como maximo 40 caracteres")
-    @Column( name = "estado", nullable = false, length = 40 )
-    private String estado; 
+    @NotNull(message = "El campo: estado, no debe ser nulo")
+    @Column(name = "estado", nullable = false)
+    private boolean estado;
 
     @NotNull( message ="El campo: tipoCliente, no debe ser nulo." )
     @ManyToOne
@@ -65,8 +64,9 @@ public class Cliente implements Serializable {
     private TipoCliente tipoCliente;
     
     
+    //no envies este campo si deseas eliminar su detalle
     @JsonIgnoreProperties( value = {"cliente"}, allowSetters = true )
-    @OneToOne( mappedBy="cliente" , cascade = CascadeType.ALL , orphanRemoval = true )
+    @OneToOne( mappedBy="cliente", cascade = CascadeType.ALL , orphanRemoval = true )
     private DetalleCliente detalleCliente;
     
     public Cliente() {
@@ -86,14 +86,6 @@ public class Cliente implements Serializable {
 
     public void setRuc(String ruc) {
         this.ruc = ruc;
-    }
-
-    public String getNombre() {
-        return nombres;
-    }
-
-    public void setNombre(String nombres) {
-        this.nombres = nombres;
     }
 
     public String getTelefono() {
@@ -120,13 +112,15 @@ public class Cliente implements Serializable {
         this.nombres = nombres;
     }
 
-    public String getEstado() {
+    public boolean isEstado() {
         return estado;
     }
 
-    public void setEstado(String estado) {
+    public void setEstado(boolean estado) {
         this.estado = estado;
     }
+
+    //TODO: metodos
 
     public TipoCliente getTipoCliente() {
         return tipoCliente;
@@ -141,9 +135,52 @@ public class Cliente implements Serializable {
     }
 
     public void setDetalleCliente(DetalleCliente detalleCliente) {
+        /**
+         * Pero es mejor no, por motivos de que el orphanremoval no funcionaria correctamente
+         * ya que el set se ejecutaria y siempre se le estableseria un cliente al detalleCliente
+         * 
+         *  detalleCliente.setCliente(this); //este es el problema, siempre le setea un cliente, aunque no lo enviemos en el JSON
+         *  //evitamos logica en el service
+         *  this.detalleCliente = detalleCliente;
+         * 
+         * Ahora, con una logica adicional de esta forma evitariamos el problema antes mencionado:
+         */
+        if(detalleCliente != null){
+            detalleCliente.setCliente(this);
+            //evitamos logica en el service
+        }
         this.detalleCliente = detalleCliente;
+
     }
     
+    public void removerDetalleCliente(){
+        this.detalleCliente.setCliente(null);
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 73 * hash + Objects.hashCode(this.idCliente);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Cliente other = (Cliente) obj;
+        if (!Objects.equals(this.idCliente, other.idCliente)) {
+            return false;
+        }
+        return true;
+    }
     
     
     

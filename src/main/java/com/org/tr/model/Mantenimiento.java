@@ -60,12 +60,18 @@ public class Mantenimiento {
 
     @DecimalMin(value = "0.00", message = "El gastoNeto no puede ser negativo.")
     @Column(name = "gasto_neto", nullable = true, scale = 2)
-    private BigDecimal gastoNeto; 
+    private BigDecimal gastoNeto;
+
+    @NotNull(message = "El campo: estadoAccion, no debe de ser nulo.")
+    @NotEmpty(message = "El campo: estadoAccion, no debe ser vacio.")
+    @Size(max = 40, message = "El campo estadoAccion debe de tener como maximo 40 caracteres.")
+    @Column(name = "estado_accion", nullable = false, length = 40)
+    private String estadoAccion;
 
     @NotNull(message = "El campo: estado, no debe de ser nulo.")
     @Column(name = "estado", nullable = false)
-    private boolean estado; //aqui si por "true" o "false"
-
+    private boolean estado;
+    
     @JsonIgnoreProperties(value = {"mantenimiento"}, allowSetters = true)
     @OneToMany(mappedBy = "mantenimiento", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DetalleMantenimiento> listaDetalleMantenimiento;
@@ -140,6 +146,14 @@ public class Mantenimiento {
 
     public void setListaDetalleMantenimiento(List<DetalleMantenimiento> listaDetalleMantenimiento) {
         this.listaDetalleMantenimiento = listaDetalleMantenimiento;
+    }
+
+    public String getEstadoAccion() {
+        return estadoAccion;
+    }
+
+    public void setEstadoAccion(String estadoAccion) {
+        this.estadoAccion = estadoAccion;
     }
 
 }

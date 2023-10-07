@@ -20,30 +20,32 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table(name = "detalle_mantenimiento")
 public class DetalleMantenimiento {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idDetalleMantenimiento;
-        
+
     @JsonIgnoreProperties(value = {"listaDetalleMantenimiento"})
     @ManyToOne
-    @JoinColumn(name ="id_mantenimiento", nullable = false, foreignKey = @ForeignKey(name ="fk_detalle_mantenimiento_mantenimiento"))
+    @JoinColumn(name = "id_mantenimiento", nullable = false, foreignKey = @ForeignKey(name = "fk_detalle_mantenimiento_mantenimiento"))
     private Mantenimiento mantenimiento;
-    
-    
-    @NotNull( message = "El campo: objeto, no debe de ser nulo.")
+
+    @NotNull(message = "El campo: objeto, no debe de ser nulo.")
     @ManyToOne
-    @JoinColumn(name="id_objeto", nullable = false, foreignKey = @ForeignKey(name="fk_detalle_mantenimiento_bjeto"))
+    @JoinColumn(name = "id_objeto", nullable = false, foreignKey = @ForeignKey(name = "fk_detalle_mantenimiento_bjeto"))
     private Objeto objeto;
-        
-    @DecimalMin(value = "0.00", message ="La cantidad usar del objeto no puede ser negativo.")
-    @Column(name ="cantidad", nullable = false, scale = 2)
+
+    @DecimalMin(value = "0.00", message = "La cantidad usar del objeto no puede ser negativo.")
+    @Column(name = "cantidad", nullable = false, scale = 2)
     private BigDecimal cantidad;
-    
+
     @JsonSerialize(using = ToStringSerializer.class)
     private LocalDateTime fecha;
 
-    
+    @NotNull(message = "El campo: estado, no debe de ser nulo.")
+    @Column(name = "estado", nullable = false)
+    private boolean estado;
+
     public Integer getIdDetalleMantenimiento() {
         return idDetalleMantenimiento;
     }
@@ -75,8 +77,6 @@ public class DetalleMantenimiento {
     public void setCantidad(BigDecimal cantidad) {
         this.cantidad = cantidad;
     }
-    
-    
 
     public LocalDateTime getFecha() {
         return fecha;
@@ -84,6 +84,14 @@ public class DetalleMantenimiento {
 
     public void setFecha(LocalDateTime fecha) {
         this.fecha = fecha;
+    }
+
+    public boolean isEstado() {
+        return estado;
+    }
+
+    public void setEstado(boolean estado) {
+        this.estado = estado;
     }
 
     

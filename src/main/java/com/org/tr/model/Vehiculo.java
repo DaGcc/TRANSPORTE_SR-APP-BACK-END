@@ -21,69 +21,56 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity
-@Table( name = "vehiculo" )
+@Table(name = "vehiculo")
 public class Vehiculo {
-    
-    
+
     @Id
-    @GeneratedValue( strategy = GenerationType.IDENTITY )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idVehiculo;
-    
-    
-    @NotNull( message ="El campo: tipoVehiculo, no debe ser nulo.")
+
+    @NotNull(message = "El campo: tipoVehiculo, no debe ser nulo.")
     @ManyToOne
-    @JoinColumn( name ="id_tipo_vehiculo", nullable = false, foreignKey = @ForeignKey(name="fk_vehiculo_tipo_vehiculo"))
+    @JoinColumn(name = "id_tipo_vehiculo", nullable = false, foreignKey = @ForeignKey(name = "fk_vehiculo_tipo_vehiculo"))
     private TipoVehiculo tipoVehiculo;
-    
-    @NotNull( message ="El campo: placa, no debe ser nulo.")
-    @NotEmpty( message ="El campo: placa, no debe de estar vacio.")
+
+    @NotNull(message = "El campo: placa, no debe ser nulo.")
+    @NotEmpty(message = "El campo: placa, no debe de estar vacio.")
     @Size(min = 7, max = 7, message = "El numero de placa del vehiculo debe de tener 7 digitos")
     @Column(name = "placa", nullable = false, length = 7, unique = true)
     private String placa;
-   
+
     @Lob
     @Basic
     private byte[] foto;
-   
-    @NotNull( message ="no debe ser nulo")
-    @NotEmpty( message ="no debe de estar vacio")
+
+    @NotNull(message = "no debe ser nulo")
+    @NotEmpty(message = "no debe de estar vacio")
     @Size(min = 2, max = 20, message = "El color del vehiculo debe de tener como minimo 2 digitos y como maximo 20")
     @Column(name = "color_vehiculo", nullable = false, length = 20)
     private String colorVehiculo;
-    
-    @NotNull( message ="El campo: alto, no debe ser nulo.")
-    @NotEmpty( message ="El campo: alto, no debe de estar vacio.")
+
+    @NotNull(message = "El campo: alto, no debe ser nulo.")
+    @NotEmpty(message = "El campo: alto, no debe de estar vacio.")
     @Column(name = "alto", nullable = false, length = 10)
     private String alto;//tratarlo como string??
-    
-    
-    @NotNull( message ="El campo: ancho, no debe ser nulo.")
-    @NotEmpty( message ="El campo: ancho, no debe de estar vacio.")
+
+    @NotNull(message = "El campo: ancho, no debe ser nulo.")
+    @NotEmpty(message = "El campo: ancho, no debe de estar vacio.")
     @Column(name = "ancho", nullable = false, length = 10)
     private String ancho;//tratarlo como string??
-    
-    @NotNull( message ="El campo: capacidadMaxima, no debe ser nulo.")
-    @NotEmpty( message ="El campo: capacidadMaxima, no debe de estar vacio.")
-    @Column(name = "capacidad_maxima", nullable = false, length = 10)
-    private String capacidadMaxima;//tratarlo como string??
-    
- 
-    @NotNull( message ="El campo: estado, no debe ser nulo.")
-    @Column( name = "estado", nullable = false )
-    private boolean estado; 
-   
-       
+
+    @NotNull(message = "El campo: estado, no debe ser nulo.")
+    @Column(name = "estado", nullable = false)
+    private boolean estado;
+
     @JsonIgnoreProperties(value = {"vehiculo"}, allowSetters = true)
-    @OneToMany( mappedBy = "vehiculo", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "vehiculo", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DetalleVehiculo> listaDetalleVehiculo;
-    
 
     public Vehiculo() {
         this.listaDetalleVehiculo = new ArrayList<DetalleVehiculo>();
     }
 
-    
-    
     public Integer getIdVehiculo() {
         return idVehiculo;
     }
@@ -140,14 +127,6 @@ public class Vehiculo {
         this.ancho = ancho;
     }
 
-    public String getCapacidadMaxima() {
-        return capacidadMaxima;
-    }
-
-    public void setCapacidadMaxima(String capacidadMaxima) {
-        this.capacidadMaxima = capacidadMaxima;
-    }
-
     public boolean isEstado() {
         return estado;
     }
@@ -163,7 +142,5 @@ public class Vehiculo {
     public void setListaDetalleVehiculo(List<DetalleVehiculo> listaDetalleVehiculo) {
         this.listaDetalleVehiculo = listaDetalleVehiculo;
     }
-    
-    
-    
+
 }
