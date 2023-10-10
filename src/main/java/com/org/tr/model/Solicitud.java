@@ -45,7 +45,7 @@ public class Solicitud implements Serializable {
 
     @NotNull(message = "El campo: descripcion, no debe de ser nulo.")
     @NotEmpty(message = "El campo: descripcion, no debe ser vacio.")
-    @Size(min = 15, max = 150, message = "Como minimo brinda una descripción de 15 caracteres y como maximo 150")
+    @Size(min = 15, max = 150, message = "Como minimo brinda una descripción de 15 caracteres y como maximo 150.")
     @Column(name = "descripcion", length = 150, nullable = false)
     private String descripcion;
 

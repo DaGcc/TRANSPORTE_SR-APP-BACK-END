@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "/clientes", produces = MediaType.APPLICATION_JSON_VALUE)
 public class ClienteController extends CommonController<Cliente, IClienteService> {
 
-    @DeleteMapping("detach/{id}")
+    @DeleteMapping("/detach/{id}")
     public ResponseEntity<?> deleteById(
             @RequestParam(name = "deep", defaultValue = "false") boolean deep,
             @PathVariable("id") int id) {
