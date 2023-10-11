@@ -18,6 +18,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Email;
@@ -38,6 +39,11 @@ public class Usuario implements Serializable {
     @Size(min = 8, message = "El password, debe contener como minimo 8 caracteres y como maximo 15.")
     @Column(name = "password", nullable = false)
     private String password;
+    
+    @NotNull(message = "El campo: tipoCuenta, no debe ser nulo.")
+    @ManyToOne
+    @JoinColumn(name="id_tipo_cuenta", nullable = false, foreignKey = @ForeignKey(name="fk_usuario_tipo_cuenta"))
+    private TipoCuenta tipoCuenta;
 
     @NotNull(message = "El campo: email, no debe ser nulo.")
     @Email(message = "Ingrese de manera correcta la direccion email.")
@@ -76,6 +82,14 @@ public class Usuario implements Serializable {
         this.idUsuario = idUsuario;
     }
 
+    public TipoCuenta getTipoCuenta() {
+        return tipoCuenta;
+    }
+
+    public void setTipoCuenta(TipoCuenta tipoCuenta) {
+        this.tipoCuenta = tipoCuenta;
+    }
+    
     public boolean isEstado() {
         return estado;
     }
@@ -99,7 +113,7 @@ public class Usuario implements Serializable {
     public void setFechaCreacion(LocalDateTime fechaCreacion) {
         this.fechaCreacion = fechaCreacion;
     }
-
+    
     public String getEmail() {
         return email;
     }

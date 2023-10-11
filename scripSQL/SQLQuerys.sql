@@ -51,13 +51,24 @@ VALUES
 	(1,3),
 	
 -----------------------------------------------------------------------
+
+-------------------------- ENTIDAD - MENU_ROL -------------------------
+select*from tipo_cuenta
+INSERT INTO tipo_cuenta
+VALUES
+	('ACC_CLIENTE'),
+	('ACC_CONDUCTOR')
+
+-----------------------------------------------------------------------
+
+
 ---------------------------- ENTIDAD - USUARIO ------------------------
 select*from usuario
 
-INSERT INTO usuario (email,estado,fecha_creacion,non_locked,password)
+INSERT INTO usuario (email,estado,fecha_creacion,non_locked,password,id_tipo_cuenta)
 VALUES 
-	('admin@admin.com', 'true', GETDATE() ,'true', '$2a$10$MspLnQ3sZYEvwSGWLXLaFOuMfDbtdX6BBIMkqWA3Xknyu1lioV9Qu'),--123
-	('user@user.com', 'true', GETDATE() ,'true', '$2a$10$a/pi2aCD27TgalcV4xBbqu5ug3YGO.HeGAzZbNERefyKPxIgMVZ1m')--123
+	('admin@admin.com', 'true', GETDATE() ,'true', '$2a$10$MspLnQ3sZYEvwSGWLXLaFOuMfDbtdX6BBIMkqWA3Xknyu1lioV9Qu',1),--123
+	('user@user.com', 'true', GETDATE() ,'true', '$2a$10$a/pi2aCD27TgalcV4xBbqu5ug3YGO.HeGAzZbNERefyKPxIgMVZ1m',2)--123
 
 -----------------------------------------------------------------------
 -------------------------- ENTIDAD - USUARIO_ROL -------------------------
