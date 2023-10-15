@@ -24,51 +24,46 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity
-@Table( name = "cliente" )
+@Table(name = "cliente")
 public class Cliente implements Serializable {
-    
-       
+
     @Id
-    @GeneratedValue( strategy = GenerationType.IDENTITY )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idCliente;
-    
-    @Size( min = 11, max = 11, message = "El RUC debe de tener once digitos." )
-    @Column( name = "ruc", nullable = true, length = 11, unique = true )
-    private String ruc; 
-    
-    @NotNull( message = "El campo: nombres, no debe de ser nulo.")
-    @NotEmpty( message = "El campo: nombres, no debe ser vacio." )
-    @Size( min = 3, max = 35, message = "El nombre debe de tener como minimo 3 caracteres y como maximo 35." )
-    @Column( name = "nombres", nullable = false, length = 35 )
+
+    @Size(min = 11, max = 11, message = "El RUC debe de tener once digitos.")
+    @Column(name = "ruc", nullable = true, length = 11, unique = true)
+    private String ruc;
+
+    @NotNull(message = "El campo: nombres, no debe de ser nulo.")
+    @NotEmpty(message = "El campo: nombres, no debe ser vacio.")
+    @Size(min = 3, max = 35, message = "El nombre debe de tener como minimo 3 caracteres y como maximo 35.")
+    @Column(name = "nombres", nullable = false, length = 35)
     private String nombres;
-    
-    
-    @NotEmpty( message = "El campo: telefono, no debe ser vacio." )
-    @Size( min = 9, max = 9, message = "El número de telefono debe de tener 9 digitos." )
-    @Column( name = "telefono", nullable = true, length = 9, unique = true )
+
+    @NotEmpty(message = "El campo: telefono, no debe ser vacio.")
+    @Size(min = 9, max = 9, message = "El número de telefono debe de tener 9 digitos.")
+    @Column(name = "telefono", nullable = true, length = 9, unique = true)
     private String telefono;
-    
-    @NotNull( message ="El campo: email, no debe ser nulo." )
-    @Email( message = "Ingrese de manera correcta la direccion email.")
-    @Column( name = "email", nullable = false, unique = true )
+
+    @NotNull(message = "El campo: email, no debe ser nulo.")
+    @Email(message = "Ingrese de manera correcta la direccion email.")
+    @Column(name = "email", nullable = false, unique = true)
     private String email;
-    
-    
+
     @NotNull(message = "El campo: estado, no debe ser nulo")
     @Column(name = "estado", nullable = false)
     private boolean estado;
 
-    @NotNull( message ="El campo: tipoCliente, no debe ser nulo." )
+    @NotNull(message = "El campo: tipoCliente, no debe ser nulo.")
     @ManyToOne
-    @JoinColumn( name="id_tipo_cliente",nullable = false, foreignKey = @ForeignKey( name = "fk_cliente_tipo_cliente" )  )
+    @JoinColumn(name = "id_tipo_cliente", nullable = false, foreignKey = @ForeignKey(name = "fk_cliente_tipo_cliente"))
     private TipoCliente tipoCliente;
-    
-    
-    //no envies este campo si deseas eliminar su detalle
-    @JsonIgnoreProperties( value = {"cliente"}, allowSetters = true )
-    @OneToOne( mappedBy="cliente", cascade = CascadeType.ALL , orphanRemoval = true )
+
+    @JsonIgnoreProperties(value = {"cliente"}, allowSetters = true)
+    @OneToOne(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
     private DetalleCliente detalleCliente;
-    
+
     public Cliente() {
     }
 
@@ -121,7 +116,6 @@ public class Cliente implements Serializable {
     }
 
     //TODO: metodos
-
     public TipoCliente getTipoCliente() {
         return tipoCliente;
     }
@@ -136,24 +130,26 @@ public class Cliente implements Serializable {
 
     public void setDetalleCliente(DetalleCliente detalleCliente) {
         /**
-         * Pero es mejor no, por motivos de que el orphanremoval no funcionaria correctamente
-         * ya que el set se ejecutaria y siempre se le estableseria un cliente al detalleCliente
-         * 
-         *  detalleCliente.setCliente(this); //este es el problema, siempre le setea un cliente, aunque no lo enviemos en el JSON
-         *  //evitamos logica en el service
-         *  this.detalleCliente = detalleCliente;
-         * 
-         * Ahora, con una logica adicional de esta forma evitariamos el problema antes mencionado:
+         * Pero es mejor no, por motivos de que el orphanremoval no funcionaria
+         * correctamente ya que el set se ejecutaria y siempre se le
+         * estableseria un cliente al detalleCliente
+         *
+         * detalleCliente.setCliente(this); //este es el problema, siempre le
+         * setea un cliente, aunque no lo enviemos en el JSON //evitamos logica
+         * en el service this.detalleCliente = detalleCliente;
+         *
+         * Ahora, con una logica adicional de esta forma evitariamos el problema
+         * antes mencionado:
          */
-        if(detalleCliente != null){
+        if (detalleCliente != null) {
             detalleCliente.setCliente(this);
             //evitamos logica en el service
         }
         this.detalleCliente = detalleCliente;
 
     }
-    
-    public void removerDetalleCliente(){
+
+    public void removerDetalleCliente() {
         this.detalleCliente.setCliente(null);
     }
 
@@ -181,7 +177,5 @@ public class Cliente implements Serializable {
         }
         return true;
     }
-    
-    
-    
+
 }

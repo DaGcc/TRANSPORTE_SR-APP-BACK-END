@@ -4,9 +4,12 @@
  */
 package com.org.tr.controller;
 
+import com.org.tr.DTO.EntityPageFilterDTO;
 import com.org.tr.excepcions.ModelNotFoundException;
 import com.org.tr.model.Cliente;
 import com.org.tr.service.IClienteService;
+import java.util.List;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +33,7 @@ public class ClienteController extends CommonController<Cliente, IClienteService
 
         //si existe
         if (clienteBD != null) {
-            
+
             //vemos si es una eliminacion profunda 
             if (deep == false) {
                 //si no lo es, solo cambiaremos el estado a falso y de respuesta sea 204
@@ -48,5 +51,13 @@ public class ClienteController extends CommonController<Cliente, IClienteService
 
     }
 
-    
+    @GetMapping("/filtro")
+    public ResponseEntity<?> filtroClientes(
+            @RequestParam(name = "pageIndex", defaultValue = "0") Integer pageIndex,
+            @RequestParam(name = "pageSize", defaultValue = "5") Integer pageSize,
+            @RequestParam(name = "value", defaultValue = "") String value, Pageable pageable) {
+        EntityPageFilterDTO<Cliente> responsePage = this.service.filtroClientes(pageIndex, pageSize, value);
+        return ResponseEntity.ok(responsePage);
+    }
+
 }

@@ -116,6 +116,11 @@ public class Solicitud implements Serializable {
     }
 
     public void setListaDetalleSolicitud(List<DetalleSolicitud> listaDetalleSolicitud) {
+        //Buena practica, para evitar errores relacionados con punteros nulos o listas vacías.
+        // inicializada != null          &   contenga elementos
+        if(listaDetalleSolicitud != null && !listaDetalleSolicitud.isEmpty()){
+            
+        }
         this.listaDetalleSolicitud = listaDetalleSolicitud;
     }
 
