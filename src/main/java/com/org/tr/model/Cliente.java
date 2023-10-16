@@ -18,6 +18,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -32,7 +33,7 @@ public class Cliente implements Serializable {
     private Integer idCliente;
 
     @Size(min = 11, max = 11, message = "El RUC debe de tener once digitos.")
-    @Column(name = "ruc", nullable = true, length = 11, unique = true)
+    @Column(name = "ruc", nullable = true, length = 11)
     private String ruc;
 
     @NotNull(message = "El campo: nombres, no debe de ser nulo.")
@@ -60,6 +61,7 @@ public class Cliente implements Serializable {
     @JoinColumn(name = "id_tipo_cliente", nullable = false, foreignKey = @ForeignKey(name = "fk_cliente_tipo_cliente"))
     private TipoCliente tipoCliente;
 
+    @Valid
     @JsonIgnoreProperties(value = {"cliente"}, allowSetters = true)
     @OneToOne(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
     private DetalleCliente detalleCliente;

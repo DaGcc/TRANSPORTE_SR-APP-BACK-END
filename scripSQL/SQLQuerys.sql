@@ -245,3 +245,45 @@ END
 --EXECUTE or EXCE
 EXEC filtro_clientes 0,1,'@'
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---UK_1qv1p1ipq2w53pmqimnap9yh9
+ALTER TABLE cliente DROP CONSTRAINT UK_1qv1p1ipq2w53pmqimnap9yh9;
+
+-- Agrega una regla de validación para permitir múltiples valores NULL
+ALTER TABLE cliente
+ADD CONSTRAINT UK_1qv1p1ipq2w53pmqimnap9yh9 CHECK (ruc IS NULL OR ruc NOT IN (SELECT ruc FROM cliente WHERE ruc IS NOT NULL))
+
+ALTER TABLE cliente
+ALTER COLUMN ruc NVARCHAR(11) NULL;
+
+ALTER TABLE cliente
+ADD CONSTRAINT UK_1qv1p1ipq2w53pmqimnap9yh9 UNIQUE (ruc);
+
+
+select*from cliente
+select*from detalle_cliente
+	CREATE TRIGGER Tr_InsertCliente
+	ON cliente
+	INSTEAD OF INSERT
+	AS
+	BEGIN
+		-- Insertar los registros en la tabla
+		INSERT INTO cliente
+		SELECT ruc FROM inserted WHERE ruc IS NOT NULL;
+	END;

@@ -55,7 +55,7 @@ public class ClienteController extends CommonController<Cliente, IClienteService
     public ResponseEntity<?> filtroClientes(
             @RequestParam(name = "pageIndex", defaultValue = "0") Integer pageIndex,
             @RequestParam(name = "pageSize", defaultValue = "5") Integer pageSize,
-            @RequestParam(name = "value", defaultValue = "") String value, Pageable pageable) {
+            @RequestParam(name = "value", defaultValue = "") String value) {
         EntityPageFilterDTO<Cliente> responsePage = this.service.filtroClientes(pageIndex, pageSize, value);
         return ResponseEntity.ok(responsePage);
     }

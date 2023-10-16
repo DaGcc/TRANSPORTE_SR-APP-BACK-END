@@ -26,10 +26,11 @@ public class ResposeExceptionHandler extends ResponseEntityExceptionHandler {
      */
     @Override
     protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        System.out.println("1"+ ex.getMessage() + "es:" + status);
         ExceptionResponse exceptionResponse = new ExceptionResponse(LocalDateTime.now(), ex.getMessage(), request.getDescription(false));
         return ResponseEntity.status(status).body(exceptionResponse); //To change body of generated methods, choose Tools | Templates.
     }
-
+    
     /**
      * Metodo controlador del estado HTTP_BAD_REQUEST
      *
@@ -41,6 +42,7 @@ public class ResposeExceptionHandler extends ResponseEntityExceptionHandler {
      */
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        System.out.println("2"+ ex.getMessage() + "es:" + status);
         ExceptionResponse exceptionResponse = new ExceptionResponse(LocalDateTime.now(), ex.getMessage(), request.getDescription(false));
         return ResponseEntity.status(status).body(exceptionResponse); //To change body of generated methods, choose Tools | Templates.
     }
