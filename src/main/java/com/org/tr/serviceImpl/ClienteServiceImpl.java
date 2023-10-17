@@ -76,45 +76,9 @@ public class ClienteServiceImpl extends CommonServiceImpl<Cliente, IClienteRepos
 
     }
 
-
+    @Override
+    public Page<Cliente> readPageByStatus(boolean estado,Pageable pageable) {
+        return this.repo.readPageByStatus(estado,pageable);
+    }
 
 }
-
-
-//            _.forEach(r -> {
-//            Cliente c = new Cliente();
-//            c.setIdCliente(Integer.parseInt(r[0].toString()));
-//            c.setEmail(r[1].toString());
-//            c.setNombres(r[2].toString());
-//            
-//            if( r[3]!=null ){
-//                c.setRuc( r[3].toString());
-//            }
-//            
-//            c.setTelefono(r[4].toString());
-//            TipoCliente tc = new TipoCliente();
-//            tc.setIdTipoCliente(Integer.parseInt(r[5].toString()));
-//            tc.setTipo(r[6].toString());
-//            c.setTipoCliente(tc);
-//
-//            c.setEstado(Boolean.parseBoolean(r[7].toString()));
-//
-//            var aux = r[8];
-//            if (aux != null) {
-//                DetalleCliente dc = new DetalleCliente();
-//                dc.setIdDetalleCliente(Integer.parseInt(aux.toString()));
-//                dc.setApellidoMaterno(r[9].toString());
-//                dc.setApellidoPaterno(r[10].toString());
-//                dc.setDni(r[11].toString());
-//                dc.setEdad(r[12].toString());
-//                dc.setFoto(null);
-//                Genero g = new Genero();
-//                g.setIdGenero(Integer.parseInt(r[14].toString()));
-//                g.setTipo(r[15].toString());
-//                dc.setGenero(g);
-//                c.setDetalleCliente(dc);
-//            } 
-//            
-//            //resultBD.add(c);
-//            resultBD.getContent().add(c);
-//        });

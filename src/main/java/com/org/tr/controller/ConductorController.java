@@ -1,14 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.org.tr.controller;
 
 import com.org.tr.DTO.EntityPageFilterDTO;
 import com.org.tr.excepcions.ModelNotFoundException;
-import com.org.tr.model.Cliente;
-import com.org.tr.service.IClienteService;
-import java.util.List;
+import com.org.tr.model.Conductor;
+import com.org.tr.service.IConductorService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
@@ -21,24 +16,24 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(value = "/clientes", produces = MediaType.APPLICATION_JSON_VALUE)
-public class ClienteController extends CommonController<Cliente, IClienteService> {
+@RequestMapping(value = "/conductores", produces = MediaType.APPLICATION_JSON_VALUE)
+public class ConductorController extends CommonController<Conductor, IConductorService> {
 
     @DeleteMapping("/detach/{id}")
     public ResponseEntity<?> deleteById(
             @RequestParam(name = "deep", defaultValue = "false") boolean deep,
             @PathVariable("id") int id) {
         //verificamos si existe en la base de datos
-        Cliente clienteBD = this.service.readById(id);
+        Conductor entityBD = this.service.readById(id);
 
         //si existe
-        if (clienteBD != null) {
+        if (entityBD != null) {
 
             //vemos si es una eliminacion profunda 
             if (deep == false) {
                 //si no lo es, solo cambiaremos el estado a falso y de respuesta sea 204
-                clienteBD.setEstado(false);
-                this.service.update(clienteBD);//guardamos esa actualizacion en la bbdd
+                entityBD.setEstado(false);
+                this.service.update(entityBD);//guardamos esa actualizacion en la bbdd
                 return ResponseEntity.noContent().build();// respuesta http_204
             } else {
                 //si lo es, elimminamos ese registro de la base de datos
@@ -46,17 +41,17 @@ public class ClienteController extends CommonController<Cliente, IClienteService
             }
         } else {
             //si no existe mandamos la excepcion con estado http 404
-            throw new ModelNotFoundException("Entidad de tipo: " + Cliente.class.getSimpleName() + " con id: " + id + ", no encontrado");
+            throw new ModelNotFoundException("Entidad de tipo: " + Conductor.class.getSimpleName() + " con id: " + id + ", no encontrado");
         }
 
     }
 
     @GetMapping("/filtro")
-    public ResponseEntity<?> filtroClientes(
+    public ResponseEntity<?> filtroConductors(
             @RequestParam(name = "pageIndex", defaultValue = "0") Integer pageIndex,
             @RequestParam(name = "pageSize", defaultValue = "5") Integer pageSize,
             @RequestParam(name = "value", defaultValue = "") String value) {
-        EntityPageFilterDTO<Cliente> responsePage = this.service.filtroClientes(pageIndex, pageSize, value);
+        EntityPageFilterDTO<Conductor> responsePage = this.service.filtroConductors(pageIndex, pageSize, value);
         return ResponseEntity.ok(responsePage);
     }
 
@@ -76,7 +71,7 @@ public class ClienteController extends CommonController<Cliente, IClienteService
         switch (estado){
             case 0, 1 -> {
                 boolean s = (estado == 1); 
-                Page<Cliente> page = this.service.readPageByStatus(s,pageable);
+                Page<Conductor> page = this.service.readPageByStatus(s,pageable);
                 return ResponseEntity.ok(page);
             }
             default -> {
