@@ -17,13 +17,15 @@ VALUES
 	('home', 'Inicio','/page/inicio'),
 	('perfil', 'person','/page/perfil'),
 	('design_services','Servicios','./'),
-	('commute','Gestion de flota','./'),
+	('commute','Gestion de flota','/page/facturas'),
 	('fact_check','Gestion de facturas','./'),
 	('outgoing_mail','Solicitud','./'),
 	('recent_actors','Gestion de conductores','/page/trabajadores'),
 	('contacts','Gestion de clientes','/page/clientes'),
 	('my_location','Geolocalizacion','/page/geolocalizacion'),
 	('calendar_month','Gestion de actividades','/page/calendar')
+
+UPDATE menu SET url = '/page/facturas' WHERE nombre = 'Gestion de facturas'
 
 -----------------------------------------------------------------------
 -------------------------- ENTIDAD - MENU_ROL -------------------------
