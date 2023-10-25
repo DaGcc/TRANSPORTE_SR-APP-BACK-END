@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,7 +35,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequestMapping(value = "/facturas", produces = MediaType.APPLICATION_JSON_VALUE)
 public class FacturaController extends CommonController<Factura, IFacturaService> {
-    
+
     @Autowired
     private IArchivoFacturaService archivoFacturaService;
 
@@ -49,7 +50,8 @@ public class FacturaController extends CommonController<Factura, IFacturaService
     public ResponseEntity<?> create(
             @RequestParam("fileFactura") MultipartFile fileFactura,
             @RequestParam("fileOrdenServicio") MultipartFile fileOrdenServicio,
-            @Valid @ModelAttribute FacturaOrdenServicioDTO dto) throws IOException, DateTimeParseException {
+            @Valid @ModelAttribute FacturaOrdenServicioDTO dto
+    ) throws IOException, DateTimeParseException {
 
         Factura fa = new Factura();
         fa.setCodigoFactura(dto.getCodigoFactura());
@@ -103,6 +105,62 @@ public class FacturaController extends CommonController<Factura, IFacturaService
 
         this.service.create(facturaOrdenFilesDTO);
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/detach")
+    public ResponseEntity<?> update(
+            @RequestParam("fileFactura") MultipartFile fileFactura,
+            @RequestParam("fileOrdenServicio") MultipartFile fileOrdenServicio,
+            @Valid @ModelAttribute FacturaOrdenServicioDTO dto
+    ) throws IOException, DateTimeParseException {
+
+        Factura fa = new Factura();
+        fa.setIdFactura(dto.getIdFactura());
+        fa.setCodigoFactura(dto.getCodigoFactura());
+
+        if (dto.getFechaFactura().isBlank()) {
+            fa.setFecha(LocalDateTime.now());
+        } else {
+            fa.setFecha(LocalDateTime.parse(dto.getFechaFactura()));
+        }
+
+        fa.setEstado(dto.isEstadoFactura());
+
+        OrdenServicio ors = new OrdenServicio();
+        ors.setIdOrdenServicio(dto.getIdOrdenServicio());
+        ors.setCodigoOrden(dto.getCodigoOrden());
+        
+        if (dto.getFechaOrden().isBlank()) {
+            ors.setFecha(LocalDateTime.now());
+        } else {
+            ors.setFecha(LocalDateTime.parse(dto.getFechaOrden()));
+        }
+        ors.setEstado(dto.isEstadoOrden());
+
+        fa.setOrdenServicio(ors);
+
+        ArchivoFactura arf = null;
+        //Si viene un archivo para la factura.
+        if (!fileFactura.isEmpty()) {
+            arf = new ArchivoFactura();//Se inicializa un espacio en memoria si es que se ha mandado el file
+            arf.setData(fileFactura.getBytes());
+            arf.setNombre(fileFactura.getOriginalFilename());
+            arf.setType(fileFactura.getContentType());
+
+        }
+
+        //si viene un archivo para el orden de servicio.
+        ArchivoOrdenServicio aro = null;
+        if (!fileOrdenServicio.isEmpty()) {
+            aro = new ArchivoOrdenServicio();//Se inicializa un espacio en memoria si es que se ha mandado el file
+            aro.setData(fileOrdenServicio.getBytes());
+            aro.setNombre(fileOrdenServicio.getOriginalFilename());
+            aro.setType(fileOrdenServicio.getContentType());
+        }
+
+        FacturaOrdenFilesDTO facturaOrdenFilesDTO = new FacturaOrdenFilesDTO(fa, arf, aro);
+        Factura facturaResponse = this.service.update(facturaOrdenFilesDTO);
+        return ResponseEntity.ok(facturaResponse);
     }
 
     @DeleteMapping("/detach/{id}")
@@ -164,15 +222,14 @@ public class FacturaController extends CommonController<Factura, IFacturaService
         }
     }
 
-    
     @GetMapping(value = "/archivo-factura/{idFactura}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-    public ResponseEntity<byte[]> buscarArchivoPorIdFactura(@PathVariable("idFactura")Integer idFactura){
+    public ResponseEntity<byte[]> buscarArchivoPorIdFactura(@PathVariable("idFactura") Integer idFactura) {
         ArchivoFactura arfBD = this.archivoFacturaService.readArchivoByfactura(idFactura);
-        
-        if(arfBD==null){
-            throw new ModelNotFoundException("La factura de id: "+idFactura+", no cuenta con un archivo.");
-        }else {
+
+        if (arfBD == null) {
+            throw new ModelNotFoundException("La factura de id: " + idFactura + ", no cuenta con un archivo.");
+        } else {
             return ResponseEntity.ok(arfBD.getData());
         }
-    } 
+    }
 }

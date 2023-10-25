@@ -10,10 +10,11 @@ public interface IFacturaService extends ICRUD<Factura> {
 
     Page<Factura> readPageByStatus(boolean estado, Pageable pageable);
  
+    //??falta
     EntityPageFilterDTO<Factura> filtroFacturas(Integer pageIndex, Integer pageSize, String filtro);
 
     
     public Factura create(FacturaOrdenFilesDTO dto);
-    
+    public Factura update(FacturaOrdenFilesDTO dto);
     
 }
