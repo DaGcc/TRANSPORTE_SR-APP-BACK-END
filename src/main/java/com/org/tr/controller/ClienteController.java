@@ -75,7 +75,7 @@ public class ClienteController extends CommonController<Cliente, IClienteService
             Pageable pageable) {
         switch (estado){
             case 0, 1 -> {
-                boolean s = (estado == 1); 
+                boolean s = (estado == 1); //or estado == 1 ? true : fasle;
                 Page<Cliente> page = this.service.readPageByStatus(s,pageable);
                 return ResponseEntity.ok(page);
             }
