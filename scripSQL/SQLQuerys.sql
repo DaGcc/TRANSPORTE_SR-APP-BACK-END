@@ -164,6 +164,7 @@ SELECT *
 FROM cliente c
 LEFT JOIN detalle_cliente dc ON c.id_cliente = dc.id_cliente;
 
+--PROCEDIMIENTO ALMACENADO PARA FILTRAR CLIENTES  DE MANERA PAGINADA 
 ALTER PROCEDURE filtro_clientes 
 ( 
 	@pageIndex INT = 0, 
@@ -248,6 +249,83 @@ END
 EXEC filtro_clientes 0,1,'@'
 
 
+--PROCEDIMIENTO ALMACENADO PARA FILTRAR CONDUCTORES DE MANERA PAGINADA 
+SELECT*FROM conductor
+CREATE PROCEDURE filtro_conductores 
+( 
+	@pageIndex INT = 0, 
+	@PageSize INT = 5,
+	@param varchar(255) = '' 
+)
+AS 
+BEGIN
+	BEGIN TRY
+		DECLARE @TotalElementos INT; -- Variable para almacenar el total de elementos
+		DECLARE @FirstPage BIT;
+		DECLARE @LastPage BIT;
+
+		-- Realizar la consulta para obtener el total de elementos
+		SELECT @TotalElementos = COUNT(*)
+		FROM conductor c
+		LEFT JOIN genero g ON g.id_genero = c.id_genero
+		WHERE 
+			(CHARINDEX(@param, c.email) > 0 AND @param != '')  OR 
+			(CHARINDEX(@param, c.nombres) > 0 AND @param != '') OR 
+			(CHARINDEX(@param, c.dni) > 0 AND @param != '') OR
+			(CHARINDEX(@param, c.apellido_paterno) > 0 AND @param != '') OR 
+			(CHARINDEX(@param, c.apellido_materno) > 0 AND @param != '');
+
+		--EVALUAREMOS SI SON PRIMERAS PAGINAS, PAGENAS CENTRALES O ULTIMAS PAGINAS
+		IF (@pageIndex = 0 ) --PRIMERA PAGINA
+			BEGIN 
+				IF ((@TotalElementos - ((@pageIndex+1)*@PageSize)) > 0)--PRIMERA PAGINA NETA, PERO NO LA ULTIMA, PUES HAY MAS FILAS POR MOSTRARR.
+					BEGIN 
+						SET @FirstPage = 'TRUE';
+						SET @LastPage = 'FALSE';
+					END
+				ELSE --PRIMERA PAGINA Y ULTIMA, ES DECIR, QUE YA NO HAY DATOS, PERO FUE EL PRIMER Y ULTIMO RESULTADO.
+					BEGIN
+						SET @FirstPage = 'TRUE';
+						SET @LastPage = 'TRUE';
+					END
+			END
+		ELSE IF ( (@TotalElementos - ((@pageIndex+1)*@PageSize)) = 0  ) --ULTIMA PAGINA
+			BEGIN
+				 SET @FirstPage = 'FALSE';
+				 SET @LastPage = 'TRUE';
+			END
+		ELSE --DATA QUE SE ENCUENTRA EN EL CENTRO DE LAS PAGINAS
+			BEGIN
+				 SET @FirstPage = 'FALSE';
+				 SET @LastPage = 'FALSE';
+			END
+		
+		--cantidad - ((pageIndex+1)*pageSize) > 0 && cantidad - ((pageIndex+1)*pageSize) < pagesize  => ultima pagina
+
+		--CONSULTA DE PAGINACION
+		SELECT
+		c.id_conductor, c.email, c.nombres, c.telefono, c.estado,
+		c.apellido_materno, c.apellido_paterno, c.dni, c.edad, c.foto,
+		g.id_genero, g.tipo,  @TotalElementos AS TotalElementos, @FirstPage AS isFirsPage, @LastPage isLastPage
+		FROM conductor c
+		LEFT JOIN genero g ON g.id_genero = c.id_genero
+		WHERE 
+			(CHARINDEX(@param, c.email) > 0 AND @param != '')  OR 
+			(CHARINDEX(@param, c.nombres) > 0 AND @param != '') OR 
+			(CHARINDEX(@param, c.dni) > 0 AND @param != '') OR
+			(CHARINDEX(@param, c.apellido_paterno) > 0 AND @param != '') OR 
+			(CHARINDEX(@param, c.apellido_materno) > 0 AND @param != '')
+		ORDER BY c.id_conductor DESC
+		OFFSET @pageIndex*@PageSize ROWS  --omitir las filas en base a eso
+		FETCH NEXT @PageSize ROWS ONLY --traer las siguientes
+
+	END TRY
+	BEGIN CATCH
+		SELECT ERROR_MESSAGE() RESULTADO
+	END CATCH
+END
+--EXECUTE or EXCE
+EXEC filtro_conductores 0,1,'d'
 
 
 

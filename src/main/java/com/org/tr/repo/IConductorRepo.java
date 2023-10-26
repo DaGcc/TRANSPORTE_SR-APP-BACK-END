@@ -19,8 +19,8 @@ public interface IConductorRepo extends JpaRepository<Conductor ,Integer>{
     @Query(value = "FROM Conductor cd WHERE cd.estado =:estado ")
     Page<Conductor> readPageByStatus(@Param("estado") boolean estado, Pageable pageable);
     
-    //!fatla ese procedure
-    @Query(value ="EXEC filtro_clientes :pageIndex,:pageSize,:filtro ", nativeQuery = true)
+    
+    @Query(value ="EXEC filtro_conductores :pageIndex,:pageSize,:filtro ", nativeQuery = true)
     List<Object[]> filtroConductors(
             @Param("pageIndex") Integer pageIndex, 
             @Param("pageSize") Integer pageSize,

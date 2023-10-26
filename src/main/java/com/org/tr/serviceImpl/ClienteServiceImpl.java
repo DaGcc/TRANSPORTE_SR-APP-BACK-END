@@ -55,7 +55,7 @@ public class ClienteServiceImpl extends CommonServiceImpl<Cliente, IClienteRepos
                 dc.setApellidoPaterno(r[10].toString());
                 dc.setDni(r[11].toString());
                 dc.setEdad(r[12].toString());
-                dc.setFoto(null);
+                dc.setFoto(null);//???
                 Genero g = new Genero();
                 g.setIdGenero(Integer.parseInt(r[14].toString()));
                 g.setTipo(r[15].toString());
