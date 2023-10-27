@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
@@ -30,7 +31,7 @@ public class DetalleSolicitud implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idDetalleSolicitud;
 
-    @NotNull(message = "El campo: solicitud, no debe de ser nulo.")
+    
     @JsonIgnoreProperties(value = {"listaDetalleSolicitud"})
     @ManyToOne
     @JoinColumn(name = "id_solicitud", nullable = false, foreignKey = @ForeignKey(name = "fk_detalle_solicitud_solicitud"))
@@ -89,6 +90,34 @@ public class DetalleSolicitud implements Serializable {
         this.estado = estado;
     }
 
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 89 * hash + Objects.hashCode(this.idDetalleSolicitud);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final DetalleSolicitud other = (DetalleSolicitud) obj;
+        if (!Objects.equals(this.idDetalleSolicitud, other.idDetalleSolicitud)) {
+            return false;
+        }
+        return true;
+    }
+
+    
+    
+    
     
 
 }

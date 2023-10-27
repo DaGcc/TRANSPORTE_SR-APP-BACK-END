@@ -25,6 +25,4 @@ public interface IClienteRepository extends JpaRepository<Cliente ,Integer>{
             @Param("pageSize") Integer pageSize,
             @Param("filtro") String filtro);
     
-    
-    
 }

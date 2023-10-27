@@ -9,7 +9,9 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -61,6 +63,7 @@ public class Solicitud implements Serializable {
     private List<DetalleSolicitud> listaDetalleSolicitud;
 
     public Solicitud() {
+        this.listaDetalleSolicitud = new ArrayList();
     }
 
     public Integer getIdSolicitud() {
@@ -116,12 +119,49 @@ public class Solicitud implements Serializable {
     }
 
     public void setListaDetalleSolicitud(List<DetalleSolicitud> listaDetalleSolicitud) {
+
+        this.listaDetalleSolicitud.clear();
+
         //Buena practica, para evitar errores relacionados con punteros nulos o listas vacías.
         // inicializada != null          &   contenga elementos
-        if(listaDetalleSolicitud != null && !listaDetalleSolicitud.isEmpty()){
-            
+        if (listaDetalleSolicitud != null && !listaDetalleSolicitud.isEmpty()) {
+            listaDetalleSolicitud.forEach(l -> {
+                l.setSolicitud(this);
+                this.listaDetalleSolicitud.add(l);
+            });
+
+            //listaDetalleSolicitud.forEach(this::addDetalleSolicitud);
         }
-        this.listaDetalleSolicitud = listaDetalleSolicitud;
+    }
+
+    public void addDetalleSolicitud(DetalleSolicitud detalleSolicitud) {
+        detalleSolicitud.setSolicitud(this);
+        this.listaDetalleSolicitud.add(detalleSolicitud);
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 53 * hash + Objects.hashCode(this.idSolicitud);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Solicitud other = (Solicitud) obj;
+        if (!Objects.equals(this.idSolicitud, other.idSolicitud)) {
+            return false;
+        }
+        return true;
     }
 
 }
