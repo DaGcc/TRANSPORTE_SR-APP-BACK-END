@@ -13,7 +13,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "detalle_vehiculo")
@@ -23,7 +22,7 @@ public class DetalleVehiculo implements Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idDetalleVehiculo;
 
-    @NotNull(message = "El campo: vehiculo, no debe ser nulo.")
+    
     @JsonIgnoreProperties(value = {"listaDetalleVehiculo"})
     @ManyToOne
     @JoinColumn(name = "id_vehiculo", nullable = false, foreignKey = @ForeignKey(name = "fk_detalle_vehiculo_vehiculo"))

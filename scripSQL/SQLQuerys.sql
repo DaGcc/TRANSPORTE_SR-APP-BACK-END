@@ -13,19 +13,23 @@ VALUES
 SELECT*FROM menu
 
 INSERT INTO menu(icon,nombre,url)
-VALUES 
+VALUES  
+	('dashboard','Dashboard','/page/dashboard'),
+
+	('','Gestion de solicitudes','/page/solicitudes'),
+
 	('home', 'Inicio','/page/inicio'),
 	('perfil', 'person','/page/perfil'),
 	('design_services','Servicios','./'),
-	('commute','Gestion de flota','/page/facturas'),
-	('fact_check','Gestion de facturas','./'),
-	('outgoing_mail','Solicitud','./'),
+	('commute','Gestion de flota','/page/flota'),
+	('fact_check','Gestion de facturas','/page/facturas'),
+	('outgoing_mail','Solicitud','/page/envio-solicitud'),
 	('recent_actors','Gestion de conductores','/page/trabajadores'),
 	('contacts','Gestion de clientes','/page/clientes'),
 	('my_location','Geolocalizacion','/page/geolocalizacion'),
 	('calendar_month','Gestion de actividades','/page/calendar')
 
-UPDATE menu SET url = '/page/facturas' WHERE nombre = 'Gestion de facturas'
+UPDATE menu SET icon = 'mark_as_unread' WHERE id_menu = 11
 
 -----------------------------------------------------------------------
 -------------------------- ENTIDAD - MENU_ROL -------------------------
@@ -43,12 +47,14 @@ VALUES
 	(7,1),
 	(8,1),
 	(9,1),
-	(10,1)
-
+	(10,1),
+	(11, 1),
+	(11, 1),
+	(12,1)
 	--user
 	(1,2),
 	(5,2),
-	(8,2)
+	(8,2),
 	(10,2)
 
 	--SAC
@@ -60,7 +66,7 @@ VALUES
 -------------------------- ENTIDAD - MENU_ROL -------------------------
 select*from tipo_cuenta
 INSERT INTO tipo_cuenta
-VALUES
+VALUES 
 	('ACC_CLIENTE'),
 	('ACC_CONDUCTOR')
 
@@ -146,9 +152,43 @@ VALUES
 	('Piezas MotorXpress','20123456789','912342578','piezasmotorxpress@gmail.com','Av Grau 148, Ica','true')
 ----------------------------------------------------------------------------------
 
+-------------------------------- ENTIDAD  - tipo vehiculo -----------------------
+SELECT * FROM combustible;
 
+INSERT INTO combustible  (tipo) 
+VALUES 
+	('Diésel'),
+	('Gas'),
+	('Electricidad ')
+----------------------------------------------------------------------------------
+-------------------------------- ENTIDAD  - tipo vehiculo -----------------------
+SELECT * FROM tipo_vehiculo
+INSERT INTO tipo_vehiculo 
+VALUES 
+	('M2','< 5 ton','minibus'),
+	('M2','< 5 ton','microbus'),
+	('M3','> 5 ton','Autobus'),
+	('M3','> 5 ton.','Autocares')
 
+----------------------------------------------------------------------------------
 
+------------------------ ENTIDAD  - tipo vehiculo y combustible ------------------
+SELECT * FROM tipo_vehiculo
+SELECT * FROM combustible;
+
+SELECT * FROM tipo_vehiculo_combustible
+INSERT INTO tipo_vehiculo_combustible (id_combustible,id_tipo_vehiculo) 
+VALUES 
+	(1,3),
+	(1,4),
+	(1,5),
+	(1,6),
+	(2,3),
+	(2,4)
+----------------------------------------------------------------------------------
+
+SELECT * FROM vehiculo
+select * from detalle_vehiculo
 
 ------------------------------------ SPs ------------------------------------
 --alter => para modificar el sp

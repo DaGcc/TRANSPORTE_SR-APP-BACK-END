@@ -20,6 +20,11 @@ public class CommonController<T, S extends ICRUD<T>> {
     @Autowired
     protected S service;
 
+    @GetMapping()
+    public ResponseEntity<?> readAll() {
+        return ResponseEntity.ok(this.service.readAll());
+    }
+
     //SOBREESCRIBE 
     @GetMapping("/paginado")
     public ResponseEntity<?> readByPage(Pageable pageable) {
@@ -36,9 +41,9 @@ public class CommonController<T, S extends ICRUD<T>> {
     @GetMapping("/{id}")
     public ResponseEntity<?> readById(@PathVariable("id") Integer id) {
         T tbd = this.service.readById(id);
-        if(tbd!=null){
+        if (tbd != null) {
             return ResponseEntity.ok(tbd);
-        }else{
+        } else {
             throw new ModelNotFoundException("Entidad de con id: " + id + ", no encontrado");
         }
     }
@@ -63,12 +68,10 @@ public class CommonController<T, S extends ICRUD<T>> {
         return ResponseEntity.ok(tbd);
     }
 
-    
-    
     //SOBREESCRIBE: PARA HACER LA LOGICA CON EL PARAMETRO "deep" Y CAMBIAR ESTADOS "TRUE o FALSE"
     @DeleteMapping("{id}")
     public ResponseEntity<?> deleteById(@PathVariable("id") int id) {
-        
+
         T tbd = this.service.readById(id);
         if (tbd == null) {
             throw new ModelNotFoundException("Entidad con id: " + id + ", no encontrado");

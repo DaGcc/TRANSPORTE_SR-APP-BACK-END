@@ -3,6 +3,7 @@ package com.org.tr.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -140,7 +141,44 @@ public class Vehiculo {
     }
 
     public void setListaDetalleVehiculo(List<DetalleVehiculo> listaDetalleVehiculo) {
-        this.listaDetalleVehiculo = listaDetalleVehiculo;
+        this.listaDetalleVehiculo.clear();
+        if(listaDetalleVehiculo != null && !listaDetalleVehiculo.isEmpty()){
+            listaDetalleVehiculo.forEach( this :: agregarDetalle );
+        }
+        
     }
+    
+    
+    public void agregarDetalle( DetalleVehiculo detalleVehiculo) { 
+        detalleVehiculo.setVehiculo(this);
+        this.listaDetalleVehiculo.add(detalleVehiculo);
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 23 * hash + Objects.hashCode(this.idVehiculo);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Vehiculo other = (Vehiculo) obj;
+        if (!Objects.equals(this.idVehiculo, other.idVehiculo)) {
+            return false;
+        }
+        return true;
+    }
+    
+    
 
 }
