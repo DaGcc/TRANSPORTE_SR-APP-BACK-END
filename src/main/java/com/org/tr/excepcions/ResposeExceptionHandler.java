@@ -1,6 +1,9 @@
 package com.org.tr.excepcions;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,7 +46,15 @@ public class ResposeExceptionHandler extends ResponseEntityExceptionHandler {
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         System.out.println("2"+ ex.getMessage() + "es:" + status);
-        ExceptionResponse exceptionResponse = new ExceptionResponse(LocalDateTime.now(), ex.getMessage(), request.getDescription(false));
+        
+        // solo para obtener el mensaje de error por defecto especificado en cada modelo con las anotaciones de Bean Validation. 
+        List<String> errorMessages = ex.getBindingResult().getAllErrors().stream()
+            .map(DefaultMessageSourceResolvable::getDefaultMessage)
+            //or .map(error -> ((DefaultMessageSourceResolvable) error).getDefaultMessage())
+            .collect(Collectors.toList());
+        String defaultErrorMessage = String.join(",", errorMessages);
+        
+        ExceptionResponse exceptionResponse = new ExceptionResponse(LocalDateTime.now(),defaultErrorMessage , request.getDescription(false));
         return ResponseEntity.status(status).body(exceptionResponse); //To change body of generated methods, choose Tools | Templates.
     }
 
