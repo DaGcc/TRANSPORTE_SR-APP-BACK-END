@@ -21,6 +21,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -62,10 +63,12 @@ public class DetalleActividad {
     @Column(name = "estado", nullable = false)
     private boolean estado;
 
+    @Valid
     @JsonIgnoreProperties(value = {"detalleActividad"}, allowSetters = true)
     @OneToMany(mappedBy = "detalleActividad", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Horario> listaHorarios;
 
+    @Valid
     @JsonIgnoreProperties(value = {"detalleActividad"}, allowSetters = true)
     @OneToMany(mappedBy = "detalleActividad", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Ruta> listaRutas;

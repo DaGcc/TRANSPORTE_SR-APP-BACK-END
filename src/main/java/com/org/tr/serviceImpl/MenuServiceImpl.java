@@ -30,7 +30,7 @@ public class MenuServiceImpl extends CommonServiceImpl<Menu, IMenuRepo> implemen
             m.setNombre((String) menu[2]);
             m.setUrl((String) menu[3]);
             
-            System.out.println(m.getNombre());
+            //System.out.println(m.getNombre());
             listaMenu.add(m);
         });
 

@@ -127,7 +127,19 @@ public class Actividad implements Serializable {
     }
 
     public void setListaDetalleActividad(List<DetalleActividad> listaDetalleActividad) {
-        this.listaDetalleActividad = listaDetalleActividad;
+        
+        this.listaDetalleActividad.clear();
+                
+        if (listaDetalleActividad != null && !listaDetalleActividad.isEmpty()) {
+            listaDetalleActividad.forEach(d -> {
+                this.addDetalle(d);
+            });
+        }
+    }
+
+    public void addDetalle(DetalleActividad detalleActividad) {
+        detalleActividad.setActividad(this);
+        this.listaDetalleActividad.add(detalleActividad);
     }
 
 }
