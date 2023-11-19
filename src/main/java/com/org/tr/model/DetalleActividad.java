@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -66,12 +67,12 @@ public class DetalleActividad {
     @Valid
     @JsonIgnoreProperties(value = {"detalleActividad"}, allowSetters = true)
     @OneToMany(mappedBy = "detalleActividad", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Horario> listaHorarios;
+    private List<Horario> listaHorarios = new ArrayList<>();
 
     @Valid
     @JsonIgnoreProperties(value = {"detalleActividad"}, allowSetters = true)
     @OneToMany(mappedBy = "detalleActividad", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Ruta> listaRutas;
+    private List<Ruta> listaRutas = new ArrayList<>();
 
     //constructor
     public DetalleActividad() {
@@ -139,7 +140,17 @@ public class DetalleActividad {
     }
 
     public void setListaHorarios(List<Horario> listaHorarios) {
-        this.listaHorarios = listaHorarios;
+        if (listaHorarios != null && !listaHorarios.isEmpty()) {
+            this.listaHorarios.clear();
+            listaHorarios.forEach(d -> {
+                this.addHorario(d);
+            });
+        }
+    }
+
+    public void addHorario(Horario horario) {
+        horario.setDetalleActividad(this);
+        this.listaHorarios.add(horario);
     }
 
     public List<Ruta> getListaRutas() {
@@ -147,7 +158,18 @@ public class DetalleActividad {
     }
 
     public void setListaRutas(List<Ruta> listaRutas) {
-        this.listaRutas = listaRutas;
+
+        if (listaRutas != null && !listaRutas.isEmpty()) {
+            this.listaRutas.clear();
+            listaRutas.forEach(d -> {
+                this.addRuta(d);
+            });
+        }
+    }
+
+    public void addRuta(Ruta ruta) {
+        ruta.setDetalleActividad(this);
+        this.listaRutas.add(ruta);
     }
 
 }

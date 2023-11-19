@@ -28,7 +28,6 @@ public class Ruta  implements Serializable{
     private Integer idRuta;
 
     @JsonIgnoreProperties(value = {"listaRutas"})
-    @NotNull(message = "El campo: detalle actividad, no debe ser nulo")
     @ManyToOne
     @JoinColumn(
             name = "id_detalle_actividad",

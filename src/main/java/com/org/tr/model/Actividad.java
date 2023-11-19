@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -63,7 +64,7 @@ public class Actividad implements Serializable {
 
     @JsonIgnoreProperties(value = {"actividad"}, allowSetters = true)
     @OneToMany(mappedBy = "actividad", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<DetalleActividad> listaDetalleActividad;
+    private List<DetalleActividad> listaDetalleActividad = new ArrayList<>();
 
     //TODO: metodos aqui
     public Integer getIdActividad() {
@@ -128,9 +129,8 @@ public class Actividad implements Serializable {
 
     public void setListaDetalleActividad(List<DetalleActividad> listaDetalleActividad) {
         
-        this.listaDetalleActividad.clear();
-                
         if (listaDetalleActividad != null && !listaDetalleActividad.isEmpty()) {
+            this.listaDetalleActividad.clear();
             listaDetalleActividad.forEach(d -> {
                 this.addDetalle(d);
             });

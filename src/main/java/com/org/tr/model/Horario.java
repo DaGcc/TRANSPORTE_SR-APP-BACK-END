@@ -38,7 +38,6 @@ public class Horario implements Serializable{
     private Integer idHorario;
 
     @JsonIgnoreProperties(value = {"listaHorarios"})
-    @NotNull(message = "El campo: detalle actividad, no debe ser nulo")
     @ManyToOne
     @JoinColumn(
             name = "id_detalle_actividad",
@@ -102,7 +101,7 @@ public class Horario implements Serializable{
     public void setDetalleActividad(DetalleActividad detalleActividad) {
         this.detalleActividad = detalleActividad;
     }
-
+    
     public String getTitulo() {
         return titulo;
     }
