@@ -31,7 +31,7 @@ import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "horario")
-public class Horario implements Serializable{
+public class Horario implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -101,7 +101,7 @@ public class Horario implements Serializable{
     public void setDetalleActividad(DetalleActividad detalleActividad) {
         this.detalleActividad = detalleActividad;
     }
-    
+
     public String getTitulo() {
         return titulo;
     }
@@ -171,43 +171,54 @@ public class Horario implements Serializable{
 
         List<Map<String, Object>> listaEventos = new ArrayList<>();
 
-        /**
-         * Da diferencia de dias entre una fecha inicio y otra final EJP:
-         * diaInicio = 2023-10-02 diaFin = 2023-10-04 numeroDias = 2 dias de
-         * diferencia
-         */
-        long numeroDiasDiferencia = ChronoUnit.DAYS.between(diaInicio, diaFin);
-        //LocalDate auxDate = this.diaInicio;
+        if (this.diaCompleto == true) {// esto si es dia completo de un punto de inicio a fin
 
-        /**
-         * Logica para sacar cada evento entre los dias establecidos de inicio a
-         * fin, con horas especificas. Se empezara de 0, por que la logica
-         * comenzara a agregar dias con el .plusDay(i). Se terminara hasta la
-         * diferencia de dias, por la logica de agregar dias. Se consideraran
-         * los eventos desde el dia de inicio hasta el dia final, por eso es esa
-         * condicional en el for(...)
-         */
-        for (long i = 0; i <= numeroDiasDiferencia; i++) {
             Map<String, Object> evento = new HashMap<>();
             evento.put("titulo", this.titulo);
 
-            /**
-             * Se empieza del dia inicio, por ende, la primera iteracion le
-             * supara 0 dias En la ultima iteracion a la fecha inicio se le dara
-             * el numero de dias de diferencia EJP: diaInicio = 2023-10-02
-             * diaFin = 2023-10-04 numeroDiasDiferencia = 2 en la ultima
-             * iteracion i = 2 por ende: LocalDate dia =
-             * this.diaInicio.plusDays(2); -> dia = 2023-10-02 + 2 dias =
-             * 2023-10-04
-             */             
-            //El .plusDays(i) no muta a this.diaInicio, pues los LocalDate-Time no son mutables, se crean nuevos objetos
-            LocalDate dia = this.diaInicio.plusDays(i);
-
-            //se establece el inicio y fin de un evento, para el mismo dia, con las horas de inicio y fin especificadas
-            evento.put("start", LocalDateTime.of(dia, this.horaInicio));
-            evento.put("end", LocalDateTime.of(dia, this.horaFin));
-
+            evento.put("start", this.diaInicio);
+            evento.put("end", this.diaFin.plusDays(1));
+            
             listaEventos.add(evento);
+        } else {
+            /**
+             * Da diferencia de dias entre una fecha inicio y otra final EJP:
+             * diaInicio = 2023-10-02 diaFin = 2023-10-04 numeroDias = 2 dias de
+             * diferencia
+             */
+            long numeroDiasDiferencia = ChronoUnit.DAYS.between(diaInicio, diaFin);
+            //LocalDate auxDate = this.diaInicio;
+
+            /**
+             * Logica para sacar cada evento entre los dias establecidos de
+             * inicio a fin, con horas especificas. Se empezara de 0, por que la
+             * logica comenzara a agregar dias con el .plusDay(i). Se terminara
+             * hasta la diferencia de dias, por la logica de agregar dias. Se
+             * consideraran los eventos desde el dia de inicio hasta el dia
+             * final, por eso es esa condicional en el for(...)
+             */
+            for (long i = 0; i <= numeroDiasDiferencia; i++) {
+                Map<String, Object> evento = new HashMap<>();
+                evento.put("titulo", this.titulo);
+
+                /**
+                 * Se empieza del dia inicio, por ende, la primera iteracion le
+                 * supara 0 dias En la ultima iteracion a la fecha inicio se le
+                 * dara el numero de dias de diferencia EJP: diaInicio =
+                 * 2023-10-02 diaFin = 2023-10-04 numeroDiasDiferencia = 2 en la
+                 * ultima iteracion i = 2 por ende: LocalDate dia =
+                 * this.diaInicio.plusDays(2); -> dia = 2023-10-02 + 2 dias =
+                 * 2023-10-04
+                 */
+                //El .plusDays(i) no muta a this.diaInicio, pues los LocalDate-Time no son mutables, se crean nuevos objetos
+                LocalDate dia = this.diaInicio.plusDays(i);
+
+                //se establece el inicio y fin de un evento, para el mismo dia, con las horas de inicio y fin especificadas
+                evento.put("start", LocalDateTime.of(dia, this.horaInicio));
+                evento.put("end", LocalDateTime.of(dia, this.horaFin));
+
+                listaEventos.add(evento);
+            }
         }
 
         return listaEventos;

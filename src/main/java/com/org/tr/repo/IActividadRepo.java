@@ -5,6 +5,8 @@
 package com.org.tr.repo;
 
 import com.org.tr.model.Actividad;
+import com.org.tr.model.DetalleActividad;
+import com.org.tr.model.Horario;
 import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -27,6 +29,9 @@ public interface IActividadRepo extends JpaRepository<Actividad ,Integer>{
             @Param("pageSize") Integer pageSize,
             @Param("filtro") String filtro);
     
+    
+    @Query("SELECT ac.listaDetalleActividad FROM Actividad ac WHERE ac.conductor.email =:email")
+    List<DetalleActividad> listarDetalleActividadesPorEmailConductor(@Param("email") String email);
     
     
 }

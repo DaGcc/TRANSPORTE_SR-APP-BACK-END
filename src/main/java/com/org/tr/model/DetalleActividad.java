@@ -36,7 +36,7 @@ public class DetalleActividad {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idDetalleActividad;
 
-    @JsonIgnoreProperties(value = {"listaDetalleSolicitud"})
+    @JsonIgnoreProperties(value = {"listaDetalleActividad"})
     @ManyToOne
     @JoinColumn(name = "id_actividad", nullable = false, foreignKey = @ForeignKey(name = "fk_detalle_actividad_actividad"))
     private Actividad actividad;

@@ -92,11 +92,13 @@ VALUES
 
 
 ---**CONSULTA PARA LISTAR LOS MENUS DEL USUARIO EN BASE A SU ROL
-select m.* from menu m inner join menu_rol mr on m.id_menu = mr.id_menu
-            		   inner join rol r on r.id_rol=mr.id_rol
-            		   inner join usuario_rol ur on ur.id_rol = r.id_rol
-            		   inner join usuario u on u.id_usuario = ur.id_usuario
-            		   where u.email='admin@admin.com'
+SELECT m.* FROM menu m inner join menu_rol mr ON m.id_menu = mr.id_menu
+            		   inner join rol r ON r.id_rol=mr.id_rol
+            		   inner join usuario_rol ur ON ur.id_rol = r.id_rol
+            		   inner join usuario u ON u.id_usuario = ur.id_usuario
+            		   WHERE u.email='admin@admin.com' ORDER BY 
+						CASE WHEN m.nombre ='Inicio' THEN 0 ELSE 1 END, -- Filas con condición especial primero
+							 m.nombre ASC;
 -----------------------------------------------------------------------
 
 

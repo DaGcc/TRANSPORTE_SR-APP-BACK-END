@@ -3,7 +3,9 @@ package com.org.tr.controller;
 import com.org.tr.DTO.EntityPageFilterDTO;
 import com.org.tr.excepcions.ModelNotFoundException;
 import com.org.tr.model.Actividad;
+import com.org.tr.model.DetalleActividad;
 import com.org.tr.service.IActividadService;
+import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
@@ -80,6 +82,12 @@ public class ActividadController extends CommonController<Actividad, IActividadS
         }
     }
     
+    @GetMapping("/conductor")
+    public ResponseEntity<?> listarDetalleActividadesPorEmailConductor(
+            @RequestParam(name = "email") String email
+    ){
+        return ResponseEntity.ok(this.service.listarDetalleActividadesPorEmailConductor(email));
+    };
 
     
 }
