@@ -101,7 +101,7 @@ public class Cliente implements Serializable {
         this.email = email;
     }
 
-    public String getNombres() {
+    public String getNombresCompletos() {
         return nombres;
     }
 
