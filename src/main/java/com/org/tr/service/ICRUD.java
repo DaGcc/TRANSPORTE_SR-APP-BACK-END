@@ -12,6 +12,7 @@ public interface ICRUD<T> {
 
     public T readById(Integer id);
 
+    //* una instacia de PageImpl es lo que realmente devuelve.
     public Page<T> readByPage(Pageable pageable);
 
     public T update(T t);
